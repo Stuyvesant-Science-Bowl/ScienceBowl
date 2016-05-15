@@ -22,9 +22,13 @@ Here is the form we used. If you want this program to work, the form must have
 the exact same order as this one:
 [Form](https://docs.google.com/forms/d/1S3mKHc_Qs65-kIGPR6w_ELu06LeUKPCd9dBREdLVSJw/viewform?fbzx=2271745987249313300)
 
+Also, here is the how the spreadsheet should look like:
+[Spreadsheet](https://docs.google.com/spreadsheets/d/1YUfQR5MfDDLHuljZvPGnid8iiYveHVcOK2-H-DJREAg/edit?usp=sharing)
+
 Here are some images that contain each part of the form to help recreate this
-type of form - remember to include
-everything: 
+type of form - remember to include everything: 
+
+
 ![Alt text](form/1.png?raw=true "Format")
 ![Alt text](form/2.png?raw=true "Format")
 ![Alt text](form/3.png?raw=true "Format")
@@ -42,7 +46,8 @@ everything:
 ![Alt text](form/15.png?raw=true "Format")
 ![Alt text](form/16.png?raw=true "Format")
 
+END OF FORM
 
 #Author
 [Shantanu Jha](https://github.com/Phionx/)
-President: Stuyvesant Science Bowl 
+President: [Stuyvesant Science Bowl](https://sites.google.com/site/stuyvesantsciencebowl/)
