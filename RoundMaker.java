@@ -4,15 +4,17 @@ import java.util.*;
 
 import com.itextpdf.text.Chapter;
 import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Section;
 import com.itextpdf.text.pdf.CMYKColor;
 import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.pdf.BaseFont;
 public class RoundMaker{
     
-    public static void main(String [] args) {
+    public static void main(String [] args)  {
         List<List<String[]>> Data = new ArrayList<List<String[]>>();
 
         List<String[]> Physics = new ArrayList<String[]>();
@@ -22,7 +24,7 @@ public class RoundMaker{
         List<String[]> EarthSpace = new ArrayList<String[]>();
         List<String[]> Energy = new ArrayList<String[]>();
         try {
-            CSVReader reader = new CSVReader(new FileReader("Questions.csv"));
+            CSVReader reader = new CSVReader(new InputStreamReader(new FileInputStream("Questions.csv"), "UTF-8"));
             String [] nextLine;
             
             while ((nextLine = reader.readNext()) != null) {
@@ -60,13 +62,23 @@ public class RoundMaker{
         } catch (IOException e){
         }
         
-        Font title = FontFactory.getFont(FontFactory.COURIER, 10, Font.BOLD, new CMYKColor(255, 255, 255, 0));
-        Font bigTitle = FontFactory.getFont(FontFactory.COURIER, 12, Font.BOLD, new CMYKColor(255, 255, 255, 0));
-        Font body = FontFactory.getFont(FontFactory.COURIER, 10, Font.NORMAL, new CMYKColor(255, 255, 255, 0));
-
+        
         //Writing PDFs
         try
         {
+            //Font stuff
+            FontFactory.register("ArialUnicode.ttf","ArialUnicodeMS");
+            Font title = FontFactory.getFont("ArialUnicodeMS",BaseFont.IDENTITY_H,BaseFont.EMBEDDED, 10, Font.BOLD);
+            Font bigTitle = FontFactory.getFont("ArialUnicodeMS",BaseFont.IDENTITY_H,BaseFont.EMBEDDED, 12, Font.BOLD);
+            Font body = FontFactory.getFont("ArialUnicodeMS",BaseFont.IDENTITY_H,BaseFont.EMBEDDED, 10, Font.NORMAL);
+
+            /*
+             * THESE FONTS did not work with unicode :( 
+            Font title = FontFactory.getFont(FontFactory.COURIER, 10, Font.BOLD, new CMYKColor(255, 255, 255, 0));
+            Font bigTitle = FontFactory.getFont(FontFactory.COURIER, 12, Font.BOLD, new CMYKColor(255, 255, 255, 0));
+            Font body = FontFactory.getFont(FontFactory.COURIER, 10, Font.NORMAL, new CMYKColor(255, 255, 255, 0));
+            */
+
             for(int j = 0; j < Data.size(); j++){
                 
                 Document document = new Document();
@@ -132,7 +144,7 @@ public class RoundMaker{
                     //Bonus Short Answer
                     questionSubject.add(new Paragraph("Bonus: Short Answer", title));
                     questionSubject.add(new Paragraph("\t" + temp[12] + "\n", body));
-                    questionSubject.add(new Paragraph("\tBonus Answer: " + temp[13] + "\n===========================================================================\n", title));
+                    questionSubject.add(new Paragraph("\tBonus Answer: " + temp[13] + "\n=========================================================================================\n", title));
                 } else if(temp[3].equals("Multiple Choice") && temp[4].equals("Multiple Choice")){
                     //Toss Up Multiple Choice
                     questionSubject.add(new Paragraph("Toss Up: Multiple Choice", title));
@@ -153,7 +165,7 @@ public class RoundMaker{
                                 "X) " + temp[22] + "\n\t\t" +
                                 "Y) " + temp[23] + "\n\t\t" +
                                 "Z) " + temp[24] + "\n\n", body));
-                    questionSubject.add(new Paragraph("\tBonus Answer: " + temp[25] + "\n===========================================================================\n", title));
+                    questionSubject.add(new Paragraph("\tBonus Answer: " + temp[25] + "\n=========================================================================================\n", title));
                 } else if(temp[3].equals("Short Answer") && temp[5].equals("Multiple Choice")){
                     //Toss Up Short Answer
                     questionSubject.add(new Paragraph("Toss Up: Short Answer", title));
@@ -168,7 +180,7 @@ public class RoundMaker{
                                 "X) " + temp[30] + "\n\t\t" +
                                 "Y) " + temp[31] + "\n\t\t" +
                                 "Z) " + temp[32] + "\n\n", body));
-                    questionSubject.add(new Paragraph("\tBonus Answer: " + temp[33] + "\n===========================================================================\n", title));
+                    questionSubject.add(new Paragraph("\tBonus Answer: " + temp[33] + "\n=========================================================================================\n", title));
 
 
                 } else if(temp[3].equals("Short Answer") && temp[5].equals("Short Answer")){
@@ -179,7 +191,7 @@ public class RoundMaker{
                     //Bonus Short Answer
                     questionSubject.add(new Paragraph("Bonus: Short Answer", title));
                     questionSubject.add(new Paragraph("\t" + temp[36] + "\n", body));
-                    questionSubject.add(new Paragraph("\tBonus Answer: " + temp[37] + "\n===========================================================================\n", title));
+                    questionSubject.add(new Paragraph("\tBonus Answer: " + temp[37] + "\n=========================================================================================\n", title));
                 } else {
                     System.out.println("UH OH SOMETHING WENT WRONG at: " + i + "; 3: " + temp[3] + " 4: " + temp[4] + " 5: " + temp[5] );
                 }
