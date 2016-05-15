@@ -67,9 +67,10 @@ public class RoundMaker{
         try
         {
             //Font stuff
-            FontFactory.register("ArialUnicode.ttf","ArialUnicodeMS");
+            FontFactory.register("fonts/ArialUnicode.ttf","ArialUnicodeMS");
             Font title = FontFactory.getFont("ArialUnicodeMS",BaseFont.IDENTITY_H,BaseFont.EMBEDDED, 10, Font.BOLD);
             Font bigTitle = FontFactory.getFont("ArialUnicodeMS",BaseFont.IDENTITY_H,BaseFont.EMBEDDED, 12, Font.BOLD);
+            Font header = FontFactory.getFont("ArialUnicodeMS",BaseFont.IDENTITY_H,BaseFont.EMBEDDED, 14, Font.BOLD);
             Font body = FontFactory.getFont("ArialUnicodeMS",BaseFont.IDENTITY_H,BaseFont.EMBEDDED, 10, Font.NORMAL);
 
             /*
@@ -114,11 +115,11 @@ public class RoundMaker{
                         break;
                 }
 
-            PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(pdfName));
+            PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream("PDFs/" + pdfName));
             document.open();
             
             //main paragraph to start of main chapter
-            Paragraph subjectTitle = new Paragraph(subjectName+"\n", bigTitle);
+            Paragraph subjectTitle = new Paragraph(subjectName+"\n", header);
             //write chapter
             Chapter subjectChapter = new Chapter(subjectTitle, 1);
             subjectChapter.setNumberDepth(0);
@@ -140,7 +141,7 @@ public class RoundMaker{
                                 "X) " + temp[8] + "\n\t\t" +
                                 "Y) " + temp[9] + "\n\t\t" +
                                 "Z) " + temp[10] + "\n", body));
-                    questionSubject.add(new Paragraph("\tToss Up Answer: " + temp[11] + "\n---------------------------------------------------------------------------", title));
+                    questionSubject.add(new Paragraph("\tToss Up Answer: " + temp[11] + "\n-----------------------------------------------------------------------------------------------------------------------------------------------------------", title));
                     //Bonus Short Answer
                     questionSubject.add(new Paragraph("Bonus: Short Answer", title));
                     questionSubject.add(new Paragraph("\t" + temp[12] + "\n", body));
@@ -155,7 +156,7 @@ public class RoundMaker{
                                 "X) " + temp[16] + "\n\t\t" +
                                 "Y) " + temp[17] + "\n\t\t" +
                                 "Z) " + temp[18] + "\n\n", body));
-                    questionSubject.add(new Paragraph("\tToss Up Answer: " + temp[19] + "\n---------------------------------------------------------------------------", title));
+                    questionSubject.add(new Paragraph("\tToss Up Answer: " + temp[19] + "\n-----------------------------------------------------------------------------------------------------------------------------------------------------------", title));
                     //Bonus Multiple Choice
                     questionSubject.add(new Paragraph("Bonus: Multiple Choice", title));
                     questionSubject.add(
@@ -170,7 +171,7 @@ public class RoundMaker{
                     //Toss Up Short Answer
                     questionSubject.add(new Paragraph("Toss Up: Short Answer", title));
                     questionSubject.add(new Paragraph("\t" + temp[26] + "\n", body));
-                    questionSubject.add(new Paragraph("\tBonus Answer: " + temp[27] + "\n---------------------------------------------------------------------------", title));
+                    questionSubject.add(new Paragraph("\tBonus Answer: " + temp[27] + "\n-----------------------------------------------------------------------------------------------------------------------------------------------------------", title));
                     //Bonus Multiple Choice
                     questionSubject.add(new Paragraph("Bonus: Multiple Choice", title));
                     questionSubject.add(
@@ -187,7 +188,7 @@ public class RoundMaker{
                     //Toss Up Short Answer
                     questionSubject.add(new Paragraph("Toss Up: Short Answer", title));
                     questionSubject.add(new Paragraph("\t" + temp[34] + "\n", body));
-                    questionSubject.add(new Paragraph("\tBonus Answer: " + temp[35] + "\n---------------------------------------------------------------------------", title));
+                    questionSubject.add(new Paragraph("\tBonus Answer: " + temp[35] + "\n-----------------------------------------------------------------------------------------------------------------------------------------------------------", title));
                     //Bonus Short Answer
                     questionSubject.add(new Paragraph("Bonus: Short Answer", title));
                     questionSubject.add(new Paragraph("\t" + temp[36] + "\n", body));
