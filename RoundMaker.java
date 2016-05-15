@@ -59,7 +59,9 @@ public class RoundMaker{
             Data.add(Energy);
         } catch (IOException e){
         }
-
+        
+        Font title = FontFactory.getFont(FontFactory.COURIER, 10, Font.BOLD, new CMYKColor(255, 255, 255, 0));
+        Font bigTitle = FontFactory.getFont(FontFactory.COURIER, 12, Font.BOLD, new CMYKColor(255, 255, 255, 0));
         Font body = FontFactory.getFont(FontFactory.COURIER, 10, Font.NORMAL, new CMYKColor(255, 255, 255, 0));
 
         //Writing PDFs
@@ -71,7 +73,7 @@ public class RoundMaker{
             document.open();
             
             //main paragraph to start of main chapter
-            Paragraph physicsTitle = new Paragraph("PHYSICS\n", body);
+            Paragraph physicsTitle = new Paragraph("PHYSICS\n", bigTitle);
             //write chapter
             Chapter physicsChapter = new Chapter(physicsTitle, 1);
             physicsChapter.setNumberDepth(0);
@@ -82,69 +84,71 @@ public class RoundMaker{
                 temp = Physics.get(i);
                
 
-                Section questionPhysics = physicsChapter.addSection(new Paragraph("PHYSICS", body));
+                Section questionPhysics = physicsChapter.addSection(new Paragraph("PHYSICS", bigTitle));
                 if(temp[3].equals("Multiple Choice") && temp[4].equals("Short Answer")){
                     //Toss Up Multiple Choice
-                    questionPhysics.add(new Paragraph("Toss Up: Multiple Choice", body));
+                    questionPhysics.add(new Paragraph("Toss Up: Multiple Choice", title));
                     questionPhysics.add(
                             new Paragraph(
                                 "\t" + temp[6] + "\n\t\t" + 
                                 "W) " + temp[7] + "\n\t\t" +
                                 "X) " + temp[8] + "\n\t\t" +
                                 "Y) " + temp[9] + "\n\t\t" +
-                                "Z) " + temp[10] + "\n"));
-                    questionPhysics.add(new Paragraph("\tToss Up Answer: " + temp[11] + "\n\n", body));
+                                "Z) " + temp[10] + "\n", body));
+                    questionPhysics.add(new Paragraph("\tToss Up Answer: " + temp[11] + "\n---------------------------------------------------------------------------", title));
                     //Bonus Short Answer
-                    questionPhysics.add(new Paragraph("Bonus: Short Answer", body));
+                    questionPhysics.add(new Paragraph("Bonus: Short Answer", title));
                     questionPhysics.add(new Paragraph("\t" + temp[12] + "\n", body));
-                    questionPhysics.add(new Paragraph("\tBonus Answer: " + temp[13] + "\n\n\n", body));
+                    questionPhysics.add(new Paragraph("\tBonus Answer: " + temp[13] + "\n======================================================================\n", title));
                 } else if(temp[3].equals("Multiple Choice") && temp[4].equals("Multiple Choice")){
                     //Toss Up Multiple Choice
-                    questionPhysics.add(new Paragraph("Toss Up: Multiple Choice", body));
+                    questionPhysics.add(new Paragraph("Toss Up: Multiple Choice", title));
                     questionPhysics.add(
                             new Paragraph(
                                 "\t" + temp[14] + "\n\t\t" + 
                                 "W) " + temp[15] + "\n\t\t" +
                                 "X) " + temp[16] + "\n\t\t" +
                                 "Y) " + temp[17] + "\n\t\t" +
-                                "Z) " + temp[18] + "\n\n"));
-                    questionPhysics.add(new Paragraph("\tToss Up Answer: " + temp[19] + "\n\n", body));
+                                "Z) " + temp[18] + "\n\n", body));
+                    questionPhysics.add(new Paragraph("\tToss Up Answer: " + temp[19] + "\n---------------------------------------------------------------------------", title));
                     //Bonus Multiple Choice
-                    questionPhysics.add(new Paragraph("Bonus: Multiple Choice", body));
+                    questionPhysics.add(new Paragraph("Bonus: Multiple Choice", title));
                     questionPhysics.add(
                             new Paragraph(
                                 "\t" + temp[20] + "\n\t\t" + 
                                 "W) " + temp[21] + "\n\t\t" +
                                 "X) " + temp[22] + "\n\t\t" +
                                 "Y) " + temp[23] + "\n\t\t" +
-                                "Z) " + temp[24] + "\n\n"));
-                    questionPhysics.add(new Paragraph("\tBonus Answer: " + temp[25] + "\n\n\n", body));
+                                "Z) " + temp[24] + "\n\n", body));
+                    questionPhysics.add(new Paragraph("\tBonus Answer: " + temp[25] + "\n======================================================================\n", title));
                 } else if(temp[3].equals("Short Answer") && temp[5].equals("Multiple Choice")){
                     //Toss Up Short Answer
-                    questionPhysics.add(new Paragraph("Toss Up: Short Answer", body));
+                    questionPhysics.add(new Paragraph("Toss Up: Short Answer", title));
                     questionPhysics.add(new Paragraph("\t" + temp[26] + "\n", body));
-                    questionPhysics.add(new Paragraph("\tBonus Answer: " + temp[27] + "\n\n", body));
+                    questionPhysics.add(new Paragraph("\tBonus Answer: " + temp[27] + "\n---------------------------------------------------------------------------", title));
                     //Bonus Multiple Choice
-                    questionPhysics.add(new Paragraph("Bonus: Multiple Choice", body));
+                    questionPhysics.add(new Paragraph("Bonus: Multiple Choice", title));
                     questionPhysics.add(
                             new Paragraph(
                                 "\t" + temp[28] + "\n\t\t" + 
                                 "W) " + temp[29] + "\n\t\t" +
                                 "X) " + temp[30] + "\n\t\t" +
                                 "Y) " + temp[31] + "\n\t\t" +
-                                "Z) " + temp[32] + "\n\n"));
-                    questionPhysics.add(new Paragraph("\tBonus Answer: " + temp[33] + "\n\n\n", body));
+                                "Z) " + temp[32] + "\n\n", body));
+                    questionPhysics.add(new Paragraph("\tBonus Answer: " + temp[33] + "\n======================================================================\n", title));
 
 
                 } else if(temp[3].equals("Short Answer") && temp[5].equals("Multiple Choice")){
                     //Toss Up Short Answer
-                    questionPhysics.add(new Paragraph("Toss Up: Short Answer", body));
+                    questionPhysics.add(new Paragraph("Toss Up: Short Answer", title));
                     questionPhysics.add(new Paragraph("\t" + temp[34] + "\n", body));
-                    questionPhysics.add(new Paragraph("\tBonus Answer: " + temp[35] + "\n\n", body));
+                    questionPhysics.add(new Paragraph("\tBonus Answer: " + temp[35] + "\n---------------------------------------------------------------------------", title));
                     //Bonus Short Answer
-                    questionPhysics.add(new Paragraph("Bonus: Short Answer", body));
+                    questionPhysics.add(new Paragraph("Bonus: Short Answer", title));
                     questionPhysics.add(new Paragraph("\t" + temp[36] + "\n", body));
-                    questionPhysics.add(new Paragraph("\tBonus Answer: " + temp[37] + "\n\n\n", body));
+                    questionPhysics.add(new Paragraph("\tBonus Answer: " + temp[37] + "\n======================================================================\n", title));
+                } else {
+                    System.out.println("UH OH SOMETHING WENT WRONG at: " + i);
                 }
             }
             
