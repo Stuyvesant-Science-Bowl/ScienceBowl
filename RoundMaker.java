@@ -71,7 +71,7 @@ public class RoundMaker{
             document.open();
             
             //main paragraph to start of main chapter
-            Paragraph physicsTitle = new Paragraph("PHYSICS", body);
+            Paragraph physicsTitle = new Paragraph("PHYSICS\n", body);
             //write chapter
             Chapter physicsText = new Chapter(physicsTitle, 1);
             physicsText.setNumberDepth(0);
