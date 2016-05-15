@@ -99,7 +99,7 @@ public class RoundMaker{
                     //Bonus Short Answer
                     questionPhysics.add(new Paragraph("Bonus: Short Answer", title));
                     questionPhysics.add(new Paragraph("\t" + temp[12] + "\n", body));
-                    questionPhysics.add(new Paragraph("\tBonus Answer: " + temp[13] + "\n======================================================================\n", title));
+                    questionPhysics.add(new Paragraph("\tBonus Answer: " + temp[13] + "\n===========================================================================\n", title));
                 } else if(temp[3].equals("Multiple Choice") && temp[4].equals("Multiple Choice")){
                     //Toss Up Multiple Choice
                     questionPhysics.add(new Paragraph("Toss Up: Multiple Choice", title));
@@ -120,7 +120,7 @@ public class RoundMaker{
                                 "X) " + temp[22] + "\n\t\t" +
                                 "Y) " + temp[23] + "\n\t\t" +
                                 "Z) " + temp[24] + "\n\n", body));
-                    questionPhysics.add(new Paragraph("\tBonus Answer: " + temp[25] + "\n======================================================================\n", title));
+                    questionPhysics.add(new Paragraph("\tBonus Answer: " + temp[25] + "\n===========================================================================\n", title));
                 } else if(temp[3].equals("Short Answer") && temp[5].equals("Multiple Choice")){
                     //Toss Up Short Answer
                     questionPhysics.add(new Paragraph("Toss Up: Short Answer", title));
@@ -135,10 +135,10 @@ public class RoundMaker{
                                 "X) " + temp[30] + "\n\t\t" +
                                 "Y) " + temp[31] + "\n\t\t" +
                                 "Z) " + temp[32] + "\n\n", body));
-                    questionPhysics.add(new Paragraph("\tBonus Answer: " + temp[33] + "\n======================================================================\n", title));
+                    questionPhysics.add(new Paragraph("\tBonus Answer: " + temp[33] + "\n===========================================================================\n", title));
 
 
-                } else if(temp[3].equals("Short Answer") && temp[5].equals("Multiple Choice")){
+                } else if(temp[3].equals("Short Answer") && temp[5].equals("Short Answer")){
                     //Toss Up Short Answer
                     questionPhysics.add(new Paragraph("Toss Up: Short Answer", title));
                     questionPhysics.add(new Paragraph("\t" + temp[34] + "\n", body));
@@ -146,9 +146,9 @@ public class RoundMaker{
                     //Bonus Short Answer
                     questionPhysics.add(new Paragraph("Bonus: Short Answer", title));
                     questionPhysics.add(new Paragraph("\t" + temp[36] + "\n", body));
-                    questionPhysics.add(new Paragraph("\tBonus Answer: " + temp[37] + "\n======================================================================\n", title));
+                    questionPhysics.add(new Paragraph("\tBonus Answer: " + temp[37] + "\n===========================================================================\n", title));
                 } else {
-                    System.out.println("UH OH SOMETHING WENT WRONG at: " + i);
+                    System.out.println("UH OH SOMETHING WENT WRONG at: " + i + "; 3: " + temp[3] + " 4: " + temp[4] + " 5: " + temp[5] );
                 }
             }
             
