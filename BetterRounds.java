@@ -12,8 +12,8 @@ import com.itextpdf.text.Section;
 import com.itextpdf.text.pdf.CMYKColor;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.pdf.BaseFont;
-public class Round{
-    
+public class BetterRounds{
+
     public static void main(String [] args)  {
         List<List<String[]>> Data = new ArrayList<List<String[]>>();
 
@@ -31,14 +31,14 @@ public class Round{
         int chemistryNum;
         int earthSpaceNum;
         int energyNum;
-        int [] num;
+        List<int[]> num;
         int roundNum;
         String [] names;
 
         try {
             CSVReader reader = new CSVReader(new InputStreamReader(new FileInputStream("Questions.csv"), "UTF-8"));
             String [] nextLine;
-            
+
             while ((nextLine = reader.readNext()) != null) {
                 //choose which List to add the Question Pairs to
                 switch(nextLine[2]){
@@ -73,7 +73,7 @@ public class Round{
             Data.add(Energy);
         } catch (IOException e){
         }
-        
+
         totalNum = Physics.size() + Mathematics.size() + Biology.size() + Chemistry.size() + EarthSpace.size() + Energy.size();
         physicsNum = (int)(25*Physics.size()/totalNum + .5);
         mathematicsNum = (int)(25*Mathematics.size()/totalNum + .5);
@@ -86,8 +86,17 @@ public class Round{
         //=> cause rounding would give extra questions that don't add up to 25
         int extra = physicsNum + mathematicsNum + biologyNum + chemistryNum + earthSpaceNum + energyNum - 25;
         earthSpaceNum = earthSpaceNum - extra;
-        
-        num = new int [] {physicsNum, mathematicsNum, biologyNum, chemistryNum, earthSpaceNum, energyNum};
+        num = new ArrayList<int[]>();
+        num.add(new int [] {physicsNum, 0});
+        num.add(new int [] {mathematicsNum, 1});
+        num.add(new int [] {biologyNum, 2});
+        num.add(new int [] {chemistryNum, 3});
+        num.add(new int [] {earthSpaceNum, 4});
+        num.add(new int [] {energyNum,5});
+
+        extra = physicsNum + mathematicsNum + biologyNum + chemistryNum + earthSpaceNum + energyNum - 25;
+        System.out.println("extra: " + extra);
+
         roundNum = (int)(totalNum)/25;
         names = new String [] {"PHYSICS", "MATHEMATICS", "BIOLOGY", "CHEMISTRY", "EARTH and SPACE", "ENERGY"};
 
@@ -110,13 +119,13 @@ public class Round{
             */
 
             for(int j = 1; j <= roundNum; j++){
-                
+
                 Document document = new Document();
                 String pdfName=""+j+".pdf";
 
             PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream("rounds/" + pdfName));
             document.open();
-            
+
             //main paragraph to start of main chapter
             Paragraph subjectTitle = new Paragraph("Round " + j +"\n", header);
             //write chapter
@@ -125,17 +134,30 @@ public class Round{
 
             List<String[]> foo;
             String [] temp;
-            
-            for(int i = 0; i < 6; i++){
-                foo = Data.get(i);
-                
-                for(int k=0; k< num[i];k++){
-                    if(foo.size() > 0) {
-                    temp = foo.get(foo.size()-1);
-                    Data.get(i).remove(foo.size()-1);
-               
+            List<int[]> numTemp = new ArrayList<int[]>(num);
+            System.out.println("Initial numTemp size: " + numTemp.size() + " num size: " + num.size());
+            int choice;
+            //random order of quesitons added in the right frequencies
+            for(int i = 0; i < 25; i++){
+                int rand = (int)(Math.random()*numTemp.size());
+                numTemp.set(rand, new int [] {numTemp.get(rand)[0]-1, numTemp.get(rand)[1]});
+                choice = numTemp.get(rand)[1];
+                System.out.println();
+                for(int n =0; n < numTemp.size(); n++){
+                    System.out.print("" + numTemp.get(n)[0] + ":" + numTemp.get(n)[1] + " ");
+                }
+                if(numTemp.get(rand)[0] == 0) {
+                    numTemp.remove(rand);
+                }
 
-                Section questionSubject = subjectChapter.addSection(new Paragraph(names[i], bigTitle));
+
+                foo = Data.get(choice);
+                if(foo.size() > 0){
+                temp = foo.get(foo.size()-1);
+                Data.get(choice).remove(foo.size()-1);
+
+
+                Section questionSubject = subjectChapter.addSection(new Paragraph(names[choice], bigTitle));
                 if(temp[3].equals("Multiple Choice") && temp[4].equals("Short Answer")){
                     //Toss Up Multiple Choice
                     questionSubject.add(new Paragraph("Toss Up: Multiple Choice", title));
@@ -201,10 +223,11 @@ public class Round{
                 } else {
                     System.out.println("UH OH SOMETHING WENT WRONG at: " + i + "; 3: " + temp[3] + " 4: " + temp[4] + " 5: " + temp[5] );
                 }
-                }}}
-            
+                }
+                }
+
             document.add(subjectChapter);
-                
+
 
             //Set attributes here
             document.addAuthor("Shantanu Jha");
@@ -212,8 +235,8 @@ public class Round{
             document.addCreator("https://sites.google.com/site/stuyvesantsciencebowl/");
             document.addTitle("Physics");
             document.addSubject("Physics Questions");
-            
-            
+
+
             document.close();
             writer.close();
             }
@@ -221,7 +244,7 @@ public class Round{
         {
             e.printStackTrace();
         }
-        
+
 
     }
 }
