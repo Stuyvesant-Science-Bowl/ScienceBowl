@@ -12,7 +12,7 @@ import com.itextpdf.text.Section;
 import com.itextpdf.text.pdf.CMYKColor;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.pdf.BaseFont;
-public class Round{
+public class OrderedRounds{
     
     public static void main(String [] args)  {
         List<List<String[]>> Data = new ArrayList<List<String[]>>();
@@ -114,7 +114,7 @@ public class Round{
                 Document document = new Document();
                 String pdfName=""+j+".pdf";
 
-            PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream("rounds/" + pdfName));
+            PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream("orderedRounds/" + pdfName));
             document.open();
             
             //main paragraph to start of main chapter

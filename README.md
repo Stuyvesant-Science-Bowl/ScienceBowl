@@ -11,11 +11,38 @@ of the different categories. You can just copy and past from these PDFs to
 create rounds. 
 
 #Running the Code
+There are three main programs: making subject pdf files, making ordered rounds
+(25 quesionts, but all the physics are stated, then all the math, etc.), make
+regular 25 question rounds with random order.
+
+
+Making Regular Rounds:
 There is a bash scrip nameked MakeRounds.sh on the top level of this repo. To
 run it do this in your terminal:
 ```
 ./MakeRounds.sh
 ```
+The rounds will be created in the rounds/ directory
+
+
+
+Making Ordered Rounds:
+There is a bash scrip nameked OrderedRounds.sh on the top level of this repo. To
+run it do this in your terminal:
+```
+./OrderedRounds.sh
+```
+The rounds will be created in the orderedRounds/ directory
+
+
+Making Subject PDFs:
+There is a bash scrip nameked MakeSubjectPDFs.sh on the top level of this repo. To
+run it do this in your terminal:
+```
+./MakeSubjectPDFs.sh
+```
+The rounds will be created in the PDFs/ directory
+
 
 #Setting up the Google Form
 Here is the form we used. If you want this program to work, the form must have
