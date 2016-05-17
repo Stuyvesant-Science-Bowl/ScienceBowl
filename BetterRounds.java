@@ -31,6 +31,9 @@ public class BetterRounds{
         int chemistryNum;
         int earthSpaceNum;
         int energyNum;
+
+        int [] extraQuestions; // to fill in gaps at the end of rounds
+
         List<int[]> num;
         int roundNum;
         String [] names;
@@ -97,8 +100,11 @@ public class BetterRounds{
         extra = physicsNum + mathematicsNum + biologyNum + chemistryNum + earthSpaceNum + energyNum - 25;
         System.out.println("extra: " + extra);
 
+    
         roundNum = (int)(totalNum)/25;
         names = new String [] {"PHYSICS", "MATHEMATICS", "BIOLOGY", "CHEMISTRY", "EARTH and SPACE", "ENERGY"};
+        
+        extraQuestions = new int [] {Physics.size() - physicsNum*roundNum, Mathematics.size() - mathematicsNum*roundNum, Biology.size() - biologyNum*roundNum, Chemistry.size() - chemistryNum*roundNum, EarthSpace.size() - earthSpaceNum*roundNum, Energy.size() - energyNum*roundNum};
 
 
         //Writing PDFs
@@ -152,7 +158,16 @@ public class BetterRounds{
 
 
                 foo = Data.get(choice);
-                if(foo.size() > 0){
+                if(foo.size() == 0){
+                    int extraQuestionPos = (int)(Math.random()*6);
+                    while(extraQuestions[extraQuestionPos] <= 0){
+                        extraQuestionPos = (int)(Math.random()*6);
+                    }
+                    extraQuestions[extraQuestionPos] -= 1;
+                    choice = extraQuestionPos;
+                    foo = Data.get(choice);
+                }
+
                 temp = foo.get(foo.size()-1);
                 Data.get(choice).remove(foo.size()-1);
 
@@ -222,7 +237,6 @@ public class BetterRounds{
                     questionSubject.add(new Paragraph("\tBonus Answer: " + temp[37] + "\n=========================================================================================\n", title));
                 } else {
                     System.out.println("UH OH SOMETHING WENT WRONG at: " + i + "; 3: " + temp[3] + " 4: " + temp[4] + " 5: " + temp[5] );
-                }
                 }
                 }
 
