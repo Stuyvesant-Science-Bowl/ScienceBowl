@@ -41,7 +41,7 @@ run it do this in your terminal:
 ```
 ./MakeSubjectPDFs.sh
 ```
-The rounds will be created in the PDFs/ directory
+The Subject PDFs will be created in the PDFs/ directory
 
 
 #Setting up the Google Form
