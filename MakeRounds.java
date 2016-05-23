@@ -237,6 +237,9 @@ public class MakeRounds{
                     questionSubject.add(new Paragraph("\tBonus Answer: " + temp[37] + "\n=========================================================================================\n", title));
                 } else {
                     System.out.println("UH OH SOMETHING WENT WRONG at: " + i + "; 3: " + temp[3] + " 4: " + temp[4] + " 5: " + temp[5] );
+                    for(int l=0; l<temp.length; l++){
+                        System.out.println(temp[l]);
+                    }
                 }
                 }
 

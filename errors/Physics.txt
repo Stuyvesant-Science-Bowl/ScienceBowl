@@ -1,1 +1,8 @@
-hi
+Questions:
+1 - Repeat question: write in pronunciation for the greek variables; fix format
+of bonus
+2 - Bonus: Magnetic Field not Force
+3 - Bonus: too hard - better values
+4 - no "none of the above questions allowed"
+6 - remove "they are all true"
+7 - 
