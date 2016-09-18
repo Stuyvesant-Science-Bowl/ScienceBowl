@@ -141,17 +141,22 @@ public class MakeRounds{
             List<int[]> numTemp = new ArrayList<int[]>(num);
             //System.out.println("Initial numTemp size: " + numTemp.size() + " num size: " + num.size());
             int choice;
-            //random order of quesitons added in the right frequencies
+            
+            
+            List<String[][]> roundQuestions = new ArrayList<String[][]>();
+            //collecting questions for a round
             for(int i = 0; i < 25; i++){
                 int rand = (int)(Math.random()*numTemp.size());
                 numTemp.set(rand, new int [] {numTemp.get(rand)[0]-1, numTemp.get(rand)[1]});
                 choice = numTemp.get(rand)[1];
+               
                 /*
                 System.out.println();
                 for(int n =0; n < numTemp.size(); n++){
                     System.out.print("" + numTemp.get(n)[0] + ":" + numTemp.get(n)[1] + " ");
                 }
                 */
+
                 if(numTemp.get(rand)[0] == 0) {
                     numTemp.remove(rand);
                 }
@@ -170,9 +175,33 @@ public class MakeRounds{
 
                 temp = foo.get(foo.size()-1);
                 Data.get(choice).remove(foo.size()-1);
+                roundQuestions.add(new String [][] {{""+choice}, temp});
+            }
 
 
-                Section questionSubject = subjectChapter.addSection(new Paragraph(names[choice], bigTitle));
+            //generating PDF
+            int lastSubject = -1; //made to prevent repeating Subjects in consecutive questions
+            temp = null;
+            int questionNum = -1; //next question picked out of roundQuestions
+            int subject;
+            for(int i = 25; i > 0; i--){
+
+                //making sure that the next question is not the same subject as
+                //the last question!!!
+                questionNum = 0;
+                subject = Integer.parseInt((roundQuestions.get(questionNum)[0][0]));
+                while(lastSubject == subject && questionNum < i-1){
+                    questionNum++;
+                    subject = Integer.parseInt((roundQuestions.get(questionNum)[0][0]));
+                }
+
+                lastSubject = subject;
+                temp = roundQuestions.get(questionNum)[1]; 
+                roundQuestions.remove(questionNum);
+                
+
+                //formatting PDF
+                Section questionSubject = subjectChapter.addSection(new Paragraph(names[subject], bigTitle));
                 if(temp[3].equals("Multiple Choice") && temp[4].equals("Short Answer")){
                     //Toss Up Multiple Choice
                     questionSubject.add(new Paragraph("Toss Up: Multiple Choice", title));
@@ -241,8 +270,9 @@ public class MakeRounds{
                         System.out.println(temp[l]);
                     }
                 }
-                }
+            }
 
+            //adding round to PDF
             document.add(subjectChapter);
 
 
