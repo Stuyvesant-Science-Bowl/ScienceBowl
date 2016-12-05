@@ -12,9 +12,19 @@ import com.itextpdf.text.Section;
 import com.itextpdf.text.pdf.CMYKColor;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.pdf.BaseFont;
+
+
 public class MakeSubjectPDFs{
-    
+
     public static void main(String [] args)  {
+		//initialize input reader
+		
+		InputStreamReader isr;
+		BufferedReader in;
+
+		isr = new InputStreamReader( System.in );
+		in = new BufferedReader( isr );
+
         List<List<String[]>> Data = new ArrayList<List<String[]>>();
 
         List<String[]> Physics = new ArrayList<String[]>();
@@ -23,7 +33,22 @@ public class MakeSubjectPDFs{
         List<String[]> Chemistry = new ArrayList<String[]>();
         List<String[]> EarthSpace = new ArrayList<String[]>();
         List<String[]> Energy = new ArrayList<String[]>();
-        try {
+        String foo;
+		int names = -1; //whether or not to include names when listing quetions: -1 -> initialized, 0 -> no, 1 -> yes
+		
+		System.out.println("Do you wish to print names?");
+		while (names < 0) {
+			System.out.print("Please enter a valid answer (\"y\" or \"n\"): ");
+			try {
+				 foo = in.readLine();
+				 if(foo.equals("n")) names = 0;
+				 if(foo.equals("y")) names = 1;
+
+			}
+			catch ( IOException e ) {names = -1;}
+			catch ( NumberFormatException e) {names = -1;}
+		}
+		try {
             CSVReader reader = new CSVReader(new InputStreamReader(new FileInputStream("Questions.csv"), "UTF-8"));
             String [] nextLine;
             
@@ -131,6 +156,7 @@ public class MakeSubjectPDFs{
                
 
                 Section questionSubject = subjectChapter.addSection(new Paragraph(subjectName, bigTitle));
+				if(names == 1) questionSubject.add(new Paragraph("Writer: " +  temp[1], title)); //name of the question writer
                 if(temp[3].equals("Multiple Choice") && temp[4].equals("Short Answer")){
                     //Toss Up Multiple Choice
                     questionSubject.add(new Paragraph("Toss Up: Multiple Choice", title));
