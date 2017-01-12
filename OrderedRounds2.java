@@ -156,6 +156,9 @@ public class OrderedRounds2{
         
         extraQuestions = new int [] {Physics.size() - physicsNum*roundNum, Mathematics.size() - mathematicsNum*roundNum, Biology.size() - biologyNum*roundNum, Chemistry.size() - chemistryNum*roundNum, EarthSpace.size() - earthSpaceNum*roundNum, Energy.size() - energyNum*roundNum};
 
+		//QUICKFIX!!!!!!! --> CHANGE LATER
+		roundNum = roundNum - 1;
+
 
         //Writing PDFs
         try
@@ -179,7 +182,7 @@ public class OrderedRounds2{
                 Document document = new Document();
                 String pdfName=""+j+".pdf";
 
-            PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream("rounds/" + pdfName));
+            PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream("orderedRounds/" + pdfName));
             document.open();
 
             //main paragraph to start of main chapter
@@ -197,13 +200,11 @@ public class OrderedRounds2{
             
             List<String[][]> roundQuestions = new ArrayList<String[][]>();
             //collecting questions for a round
-            int rand = 0;
 			//rand is always 0 because it will just take the first entry in numTemp (i.e. the first subject that still has a positive number of 
 			//questions left to contribute to the round
 			for(int i = 0; i < 25; i++){	
-                numTemp.set(rand, new int [] {numTemp.get(rand)[0]-1, numTemp.get(rand)[1]});
-                choice = numTemp.get(rand)[1];
-               
+                numTemp.set(0, new int [] {numTemp.get(0)[0]-1, numTemp.get(0)[1]});
+                choice = numTemp.get(0)[1];
                 /*DeBugging
                 System.out.println();
                 for(int n =0; n < numTemp.size(); n++){
@@ -215,13 +216,14 @@ public class OrderedRounds2{
 				System.out.println("Energy Extra Questions Left: " + extraQuestions[5]);
 				System.out.println("Random Subject Category Chosen: " + names[numTemp.get(rand)[1]]);
 				*/
-                if(numTemp.get(rand)[0] <= 0) {
-                    numTemp.remove(rand);
+                if(numTemp.get(0)[0] <= 0) {
+                    numTemp.remove(0);
                 }
 
 
                 foo = Data.get(choice);
                 if(foo.size() == 0){
+					//System.out.println("lol");
                     int extraQuestionPos = (choice + 1)%6;
                     while(extraQuestions[extraQuestionPos] <= 0){
                         extraQuestionPos = (choice + 1)%6;
@@ -231,8 +233,8 @@ public class OrderedRounds2{
                     foo = Data.get(choice);
                 }
 
-				/* DeBugging
 				System.out.println("Round: " + j + " Question: " + (i + 1));
+				/* DeBugging
 
 				System.out.println("Earth Space Size: " + EarthSpace.size() + " Earth Space Expected: " + earthSpaceNum*roundNum);
 				System.out.println("Bio  Size: " + Biology.size() + " Bio Expected: " + biologyNum*roundNum);
@@ -244,35 +246,15 @@ public class OrderedRounds2{
 				System.out.println("------------------------------------------------------------------------------------------------------------");
 				
 				*/
+
+
+				System.out.println("Choice: " + choice);
 				temp = foo.get(foo.size()-1);
                 Data.get(choice).remove(foo.size()-1);
-                roundQuestions.add(new String [][] {{""+choice}, temp});
-            }
-
-
-            //generating PDF
-            int lastSubject = -1; //made to prevent repeating Subjects in consecutive questions
-            temp = null;
-            int questionNum = -1; //next question picked out of roundQuestions
-            int subject;
-            for(int i = 25; i > 0; i--){
-
-                //making sure that the next question is not the same subject as
-                //the last question!!!
-                questionNum = 0;
-                subject = Integer.parseInt((roundQuestions.get(questionNum)[0][0]));
-                while(lastSubject == subject && questionNum < i-1){
-                    questionNum++;
-                    subject = Integer.parseInt((roundQuestions.get(questionNum)[0][0]));
-                }
-
-                lastSubject = subject;
-                temp = roundQuestions.get(questionNum)[1]; 
-                roundQuestions.remove(questionNum);
                 
 
                 //formatting PDF
-                Section questionSubject = subjectChapter.addSection(new Paragraph(names[subject], bigTitle));
+                Section questionSubject = subjectChapter.addSection(new Paragraph(names[choice], bigTitle));
 				if(useNames == 1) questionSubject.add(new Paragraph("Writer: " +  temp[1], title)); //name of the question writer 
 				if(temp[3].equals("Multiple Choice") && temp[4].equals("Short Answer")){
                     //Toss Up Multiple Choice
