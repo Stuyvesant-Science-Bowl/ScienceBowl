@@ -15,7 +15,15 @@ import com.itextpdf.text.pdf.BaseFont;
 public class MakeRounds{
 
     public static void main(String [] args)  {
-        List<List<String[]>> Data = new ArrayList<List<String[]>>();
+        
+		//Input to determine whether or not to display names!
+		InputStreamReader isr;
+		BufferedReader in;
+
+		isr = new InputStreamReader( System.in );
+		in = new BufferedReader( isr );
+		
+		List<List<String[]>> Data = new ArrayList<List<String[]>>();
 
         List<String[]> Physics = new ArrayList<String[]>();
         List<String[]> Mathematics = new ArrayList<String[]>();
@@ -24,6 +32,25 @@ public class MakeRounds{
         List<String[]> EarthSpace = new ArrayList<String[]>();
         List<String[]> Energy = new ArrayList<String[]>();
 
+
+		//input
+
+        String useNamesChoice;
+		int useNames = -1; //whether or not to include names when listing quetions: -1 -> initialized, 0 -> no, 1 -> yes
+		
+		System.out.println("Do you wish to print names?");
+		while (useNames < 0) {
+			System.out.print("Please enter a valid answer (\"y\" or \"n\"): ");
+			try {
+				 useNamesChoice = in.readLine();
+				 if(useNamesChoice.equals("n")) useNames = 0;
+				 if(useNamesChoice.equals("y")) useNames = 1;
+
+			}
+			catch ( IOException e ) {useNames = -1;}
+			catch ( NumberFormatException e) {useNames = -1;}
+		}
+		//end of input
         float totalNum;
         int physicsNum;
         int mathematicsNum;
@@ -88,18 +115,34 @@ public class MakeRounds{
         //dealing with cases in which frequency of questions is exactly n + .5
         //=> cause rounding would give extra questions that don't add up to 25
         int extra = physicsNum + mathematicsNum + biologyNum + chemistryNum + earthSpaceNum + energyNum - 25;
+		/*Debugging
+		System.out.println("Extra: " + extra);
+		System.out.println("Energy: " + energyNum);
+		*/
         earthSpaceNum = earthSpaceNum - extra;
         num = new ArrayList<int[]>();
-        num.add(new int [] {physicsNum, 0});
-        num.add(new int [] {mathematicsNum, 1});
-        num.add(new int [] {biologyNum, 2});
-        num.add(new int [] {chemistryNum, 3});
-        num.add(new int [] {earthSpaceNum, 4});
-        num.add(new int [] {energyNum,5});
+        if (physicsNum > 0) num.add(new int [] {physicsNum, 0});
+        if (mathematicsNum > 0) num.add(new int [] {mathematicsNum, 1});
+        if (biologyNum > 0) num.add(new int [] {biologyNum, 2});
+        if (chemistryNum > 0) num.add(new int [] {chemistryNum, 3});
+        if (earthSpaceNum > 0) num.add(new int [] {earthSpaceNum, 4});
+        if (energyNum > 0) num.add(new int [] {energyNum,5});
+
+
 
 
     
         roundNum = (int)(totalNum)/25;
+		/*Debugging
+		System.out.println("\n------------------------------------------------------------------------------------------------------------");
+		System.out.println("Earth Space Size: " + EarthSpace.size() + " Earth Space Expected: " + earthSpaceNum*roundNum);
+		System.out.println("Bio  Size: " + Biology.size() + " Bio Expected: " + biologyNum*roundNum);
+		System.out.println("Math Size: " + Mathematics.size() + " Math Expected: " + mathematicsNum*roundNum);
+		System.out.println("Energy Size: " + Energy.size() + " Energy Expected: " + energyNum*roundNum);
+		System.out.println("Chemistry Size: " + Chemistry.size() + " Chemistry Expected: " + chemistryNum*roundNum);
+		System.out.println("Physics Size: " + Physics.size() + " Physics Expected: " + physicsNum*roundNum);
+		System.out.println("------------------------------------------------------------------------------------------------------------");
+		*/
         names = new String [] {"PHYSICS", "MATHEMATICS", "BIOLOGY", "CHEMISTRY", "EARTH and SPACE", "ENERGY"};
         
         extraQuestions = new int [] {Physics.size() - physicsNum*roundNum, Mathematics.size() - mathematicsNum*roundNum, Biology.size() - biologyNum*roundNum, Chemistry.size() - chemistryNum*roundNum, EarthSpace.size() - earthSpaceNum*roundNum, Energy.size() - energyNum*roundNum};
@@ -137,8 +180,8 @@ public class MakeRounds{
             subjectChapter.setNumberDepth(0);
 
             List<String[]> foo;
-            String [] temp;
-            List<int[]> numTemp = new ArrayList<int[]>(num);
+            String [] temp; 
+            List<int[]> numTemp = new ArrayList<int[]>(num); //stores distribution of number of questions for each subject in a round
             //System.out.println("Initial numTemp size: " + numTemp.size() + " num size: " + num.size());
             int choice;
             
@@ -150,14 +193,18 @@ public class MakeRounds{
                 numTemp.set(rand, new int [] {numTemp.get(rand)[0]-1, numTemp.get(rand)[1]});
                 choice = numTemp.get(rand)[1];
                
-                /*
+                /*DeBugging
                 System.out.println();
                 for(int n =0; n < numTemp.size(); n++){
                     System.out.print("" + numTemp.get(n)[0] + ":" + numTemp.get(n)[1] + " ");
                 }
                 */
-
-                if(numTemp.get(rand)[0] == 0) {
+				/* DeBugging
+				System.out.println("\n------------------------------------------------------------------------------------------------------------");
+				System.out.println("Energy Extra Questions Left: " + extraQuestions[5]);
+				System.out.println("Random Subject Category Chosen: " + names[numTemp.get(rand)[1]]);
+				*/
+                if(numTemp.get(rand)[0] <= 0) {
                     numTemp.remove(rand);
                 }
 
@@ -173,7 +220,20 @@ public class MakeRounds{
                     foo = Data.get(choice);
                 }
 
-                temp = foo.get(foo.size()-1);
+				/* DeBugging
+				System.out.println("Round: " + j + " Question: " + (i + 1));
+
+				System.out.println("Earth Space Size: " + EarthSpace.size() + " Earth Space Expected: " + earthSpaceNum*roundNum);
+				System.out.println("Bio  Size: " + Biology.size() + " Bio Expected: " + biologyNum*roundNum);
+				System.out.println("Math Size: " + Mathematics.size() + " Math Expected: " + mathematicsNum*roundNum);
+				System.out.println("Energy Size: " + Energy.size() + " Energy Expected: " + energyNum*roundNum);
+				System.out.println("Chemistry Size: " + Chemistry.size() + " Chemistry Expected: " + chemistryNum*roundNum);
+				System.out.println("Physics Size: " + Physics.size() + " Physics Expected: " + physicsNum*roundNum);
+				System.out.println("Question Type: " + names[choice]);
+				System.out.println("------------------------------------------------------------------------------------------------------------");
+				
+				*/
+				temp = foo.get(foo.size()-1);
                 Data.get(choice).remove(foo.size()-1);
                 roundQuestions.add(new String [][] {{""+choice}, temp});
             }
@@ -202,7 +262,8 @@ public class MakeRounds{
 
                 //formatting PDF
                 Section questionSubject = subjectChapter.addSection(new Paragraph(names[subject], bigTitle));
-                if(temp[3].equals("Multiple Choice") && temp[4].equals("Short Answer")){
+				if(useNames == 1) questionSubject.add(new Paragraph("Writer: " +  temp[1], title)); //name of the question writer 
+				if(temp[3].equals("Multiple Choice") && temp[4].equals("Short Answer")){
                     //Toss Up Multiple Choice
                     questionSubject.add(new Paragraph("Toss Up: Multiple Choice", title));
                     questionSubject.add(

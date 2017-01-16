@@ -85,7 +85,17 @@ public class OrderedRounds{
         //dealing with cases in which frequency of questions is exactly n + .5
         //=> cause rounding would give extra questions that don't add up to 25
         int extra = physicsNum + mathematicsNum + biologyNum + chemistryNum + earthSpaceNum + energyNum - 25;
-        earthSpaceNum = earthSpaceNum - extra;
+        
+		//dealing with extra distribution
+		int maxNum = Math.max(Math.max(Math.max(Math.max(Math.max(physicsNum, mathematicsNum), biologyNum), chemistryNum), earthSpaceNum), energyNum);
+		
+		if(maxNum == physicsNum) physicsNum = physicsNum - extra;
+		else if (maxNum == mathematicsNum) mathematicsNum = mathematicsNum - extra;
+		else if (maxNum ==  biologyNum) biologyNum = biologyNum - extra;
+		else if (maxNum == chemistryNum) chemistryNum = chemistryNum - extra;
+		else if (maxNum == earthSpaceNum) earthSpaceNum = earthSpaceNum - extra;
+		else if (maxNum == energyNum) energyNum = energyNum - extra;
+
         
         num = new int [] {physicsNum, mathematicsNum, biologyNum, chemistryNum, earthSpaceNum, energyNum};
         roundNum = (int)(totalNum)/25;
