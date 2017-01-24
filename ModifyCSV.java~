@@ -251,7 +251,7 @@ public class ModifyCSV{
                 } else if(temp[3].equals("Short Answer") && temp[5].equals("Short Answer")){
                     //Toss Up Short Answer
                     sb.append("1: Toss Up | Short Answer: " +  temp[34] + (char)2);
-                    sb.append("2: Toss Up Answer: " + temp[35] + (char)2);
+                    sb.append("2: Toss Up Answer: " + temp[35] + (char)3);
                     //Bonus Short Answer
                     sb.append("3: Bonus | Short Answer: " + temp[36] + (char)2);
                     sb.append("4: Bonus Answer: " + temp[37] + (char)3);
