@@ -14,8 +14,32 @@ import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.pdf.BaseFont;
 public class OrderedRounds2{
 
+	
+	private static void clear(){
+		final String clear = "\u001b[2J";
+		final String home = "\u001b[H";
+		System.out.print(clear + home);
+		System.out.flush();
+	}
+
+	private static void delay(){
+		try {
+			Thread.sleep(200);
+		} catch(InterruptedException ex) {
+			Thread.currentThread().interrupt();
+		}
+	}
+
+	public static void printNames(List<String> names){
+		System.out.println("LIST OF QUESTION CONTRIBUTORS: ");
+		for( int i = 1; i < names.size(); i++)
+			System.out.println("\t" + i + ". " + names.get(i));
+	
+	}
+
+
     public static void main(String [] args)  {
-        
+		clear(); 
 		//Input to determine whether or not to display names!
 		InputStreamReader isr;
 		BufferedReader in;
@@ -23,6 +47,7 @@ public class OrderedRounds2{
 		isr = new InputStreamReader( System.in );
 		in = new BufferedReader( isr );
 		
+		List<String[]> PreData = new ArrayList<String[]>();
 		List<List<String[]>> Data = new ArrayList<List<String[]>>();
 
         List<String[]> Physics = new ArrayList<String[]>();
@@ -35,21 +60,43 @@ public class OrderedRounds2{
 
 		//input
 
-        String useNamesChoice;
+        String answerChoice;
 		int useNames = -1; //whether or not to include names when listing quetions: -1 -> initialized, 0 -> no, 1 -> yes
+		int removePlayers = -1; //whether or not to remove questions by certain players: -1 -> initialized, 0 -> no, 1-> yes
+		List<String> goodNames = new ArrayList<String>();
+		List<String> badNames = new ArrayList<String>(); //list of names to remove from question repo when forming rounds
+
+
 		
 		System.out.println("Do you wish to print names?");
 		while (useNames < 0) {
 			System.out.print("Please enter a valid answer (\"y\" or \"n\"): ");
 			try {
-				 useNamesChoice = in.readLine();
-				 if(useNamesChoice.equals("n")) useNames = 0;
-				 if(useNamesChoice.equals("y")) useNames = 1;
+				 answerChoice = in.readLine();
+				 if(answerChoice.equals("n")) useNames = 0;
+				 if(answerChoice.equals("y")) useNames = 1;
 
 			}
 			catch ( IOException e ) {useNames = -1;}
 			catch ( NumberFormatException e) {useNames = -1;}
 		}
+
+
+
+		System.out.println("Do you wish to remove questions by certain players?");
+		while (removePlayers < 0) {
+			System.out.print("Please enter a valid answer (\"y\" or \"n\"): ");
+			try {
+				 answerChoice = in.readLine();
+				 if(answerChoice.equals("n")) removePlayers = 0;
+				 if(answerChoice.equals("y")) removePlayers = 1;
+
+			}
+			catch ( IOException e ) {removePlayers = -1;}
+			catch ( NumberFormatException e) {removePlayers = -1;}
+		}
+	
+		
 		//end of input
         float totalNum;
         int physicsNum;
@@ -65,12 +112,60 @@ public class OrderedRounds2{
         int roundNum;
         String [] names;
 
+        String [] nextLine;
+        
         try {
             CSVReader reader = new CSVReader(new InputStreamReader(new FileInputStream("Questions.csv"), "UTF-8"));
-            String [] nextLine;
 
             while ((nextLine = reader.readNext()) != null) {
-                //choose which List to add the Question Pairs to
+                PreData.add(nextLine);
+				if(!goodNames.contains(nextLine[1])) goodNames.add(nextLine[1]);
+			}
+        } catch (IOException e){
+        }
+
+		int playerToRemove; //player to remove
+		String nameToRemove;
+		while (removePlayers > 0){
+			playerToRemove = 1;
+			clear();
+			System.out.println("Please enter the number of the player you wish to remove.");
+			printNames(goodNames);
+			while (playerToRemove > 0) {
+				System.out.print("Enter a valid player number from 1-" + (goodNames.size()-1) + " or enter \"0\" to stop removing and generate the rounds: ");
+				try {
+					playerToRemove = Integer.parseInt(in.readLine());
+					if (playerToRemove > 0 && playerToRemove < goodNames.size()){
+						nameToRemove = goodNames.get(playerToRemove);
+						badNames.add(nameToRemove);
+						if(!goodNames.remove(nameToRemove)){
+							System.out.println("ERROR: Name to remove not found!");
+						} else {
+							System.out.println(nameToRemove + "'s questions were removed!");
+						}
+						playerToRemove = -1;
+						removePlayers = 1; //just to make sure the outermost while loop keeps going
+					} else if (playerToRemove == 0){
+						System.out.println("ALRIGHT, generating the rounds now!");
+						playerToRemove = -1;
+						removePlayers = -1; //to stop the outermost while loop
+					} else {
+						System.out.println("Please enter a valid player number between 1 and " + (goodNames.size() - 1));
+						playerToRemove = 1;
+						removePlayers = 1;
+					}
+				}
+				catch ( IOException e ) {playerToRemove = -1;}
+				catch ( NumberFormatException e) {playerToRemove = -1;}
+			}
+		}
+			
+
+
+		for (int ques = PreData.size()-1; ques >= 0; ques--){
+			if (!badNames.contains(PreData.get(ques)[1])){
+				nextLine = PreData.get(ques);
+				//choose which List to add the Question Pairs to
                 switch(nextLine[2]){
                     case "Physics":
                         Physics.add(nextLine);
@@ -94,15 +189,14 @@ public class OrderedRounds2{
                         break;
                 }
             }
+		}
             //Add the individual Lists to the main Data List
-            Data.add(Physics);
-            Data.add(Mathematics);
-            Data.add(Biology);
-            Data.add(Chemistry);
-            Data.add(EarthSpace);
-            Data.add(Energy);
-        } catch (IOException e){
-        }
+        Data.add(Physics);
+        Data.add(Mathematics);
+        Data.add(Biology);
+        Data.add(Chemistry);
+        Data.add(EarthSpace);
+        Data.add(Energy);
 
         totalNum = Physics.size() + Mathematics.size() + Biology.size() + Chemistry.size() + EarthSpace.size() + Energy.size();
         physicsNum = (int)(25*Physics.size()/totalNum + .5);
@@ -119,16 +213,7 @@ public class OrderedRounds2{
 		System.out.println("Extra: " + extra);
 		System.out.println("Energy: " + energyNum);
 		*/
-		//dealing with extra distribution
-		int maxNum = Math.max(Math.max(Math.max(Math.max(Math.max(physicsNum, mathematicsNum), biologyNum), chemistryNum), earthSpaceNum), energyNum);
-		
-		if(maxNum == physicsNum) physicsNum = physicsNum - extra;
-		else if (maxNum == mathematicsNum) mathematicsNum = mathematicsNum - extra;
-		else if (maxNum ==  biologyNum) biologyNum = biologyNum - extra;
-		else if (maxNum == chemistryNum) chemistryNum = chemistryNum - extra;
-		else if (maxNum == earthSpaceNum) earthSpaceNum = earthSpaceNum - extra;
-		else if (maxNum == energyNum) energyNum = energyNum - extra;
-
+        earthSpaceNum = earthSpaceNum - extra;
         num = new ArrayList<int[]>();
         if (physicsNum > 0) num.add(new int [] {physicsNum, 0});
         if (mathematicsNum > 0) num.add(new int [] {mathematicsNum, 1});
@@ -142,6 +227,8 @@ public class OrderedRounds2{
 
     
         roundNum = (int)(totalNum)/25;
+
+		roundNum = roundNum - 1; //HOTFIX -- not permenant
 		/*Debugging
 		System.out.println("\n------------------------------------------------------------------------------------------------------------");
 		System.out.println("Earth Space Size: " + EarthSpace.size() + " Earth Space Expected: " + earthSpaceNum*roundNum);
@@ -155,10 +242,6 @@ public class OrderedRounds2{
         names = new String [] {"PHYSICS", "MATHEMATICS", "BIOLOGY", "CHEMISTRY", "EARTH and SPACE", "ENERGY"};
         
         extraQuestions = new int [] {Physics.size() - physicsNum*roundNum, Mathematics.size() - mathematicsNum*roundNum, Biology.size() - biologyNum*roundNum, Chemistry.size() - chemistryNum*roundNum, EarthSpace.size() - earthSpaceNum*roundNum, Energy.size() - energyNum*roundNum};
-
-		//QUICKFIX!!!!!!! --> CHANGE LATER
-		roundNum = roundNum - 1;
-
 
         //Writing PDFs
         try
