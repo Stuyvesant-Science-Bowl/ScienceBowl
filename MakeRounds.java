@@ -13,7 +13,8 @@ import com.itextpdf.text.pdf.CMYKColor;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.pdf.BaseFont;
 public class MakeRounds{
-	
+
+	//clear function
 	private static void clear(){
 		final String clear = "\u001b[2J";
 		final String home = "\u001b[H";
@@ -21,6 +22,7 @@ public class MakeRounds{
 		System.out.flush();
 	}
 
+	//delay function
 	private static void delay(){
 		try {
 			Thread.sleep(200);
@@ -29,6 +31,7 @@ public class MakeRounds{
 		}
 	}
 
+	//print names function
 	public static void printNames(List<String> names){
 		System.out.println("LIST OF QUESTION CONTRIBUTORS: ");
 		for( int i = 1; i < names.size(); i++)
@@ -36,6 +39,7 @@ public class MakeRounds{
 	
 	}
 
+	//main function
     public static void main(String [] args)  {
 		clear(); 
 		//Input to determine whether or not to display names!
