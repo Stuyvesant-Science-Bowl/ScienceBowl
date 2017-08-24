@@ -26,29 +26,7 @@ public class MakeSchoolPDFs{
 		in = new BufferedReader( isr );
 
         HashMap<String, List<String[]>> data = new HashMap<>();
-        /*List<List<String[]>> Data = new ArrayList<List<String[]>>();
 
-        List<String[]> Physics = new ArrayList<String[]>();
-        List<String[]> Mathematics = new ArrayList<String[]>();
-        List<String[]> Biology = new ArrayList<String[]>();
-        List<String[]> Chemistry = new ArrayList<String[]>();
-        List<String[]> EarthSpace = new ArrayList<String[]>();
-        List<String[]> Energy = new ArrayList<String[]>(); */
-        String foo;
-		 /* int names = -1; //whether or not to include names when listing quetions: -1 -> initialized, 0 -> no, 1 -> yes
-		
-		System.out.println("Do you wish to print names?");
-		while (names < 0) {
-			System.out.print("Please enter a valid answer (\"y\" or \"n\"): ");
-			try {
-				 foo = in.readLine();
-				 if(foo.equals("n")) names = 0;
-				 if(foo.equals("y")) names = 1;
-
-			}
-			catch ( IOException e ) {names = -1;}
-			catch ( NumberFormatException e) {names = -1;}
-        } */
 		try {
             CSVReader reader = new CSVReader(new InputStreamReader(new FileInputStream("Questions.csv"), "UTF-8"));
             String [] nextLine;
