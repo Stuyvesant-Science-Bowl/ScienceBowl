@@ -23,6 +23,38 @@ public class OrderedRounds3{
         return true;
     }
 
+    public static Boolean hasRepeats(List<String> x) {
+        for (int i = 0; i < x.size() - 1; i++) {
+            if (x.get(i).equals(x.get(i+1))) return true;
+        }
+        return false;
+    }
+    public static List<String> getDist() {
+        int math = 5;
+        int bio = 5; 
+        int chem = 5; 
+        int physics = 5; 
+        int es = 5; 
+        int energy = (int) (Math.random() * 2); 
+        int total = math + bio + chem + physics + es + energy; 
+        int [] vals = {math, bio, chem, physics, es}; 
+        while (total > 25) {
+            int rand = (int) (Math.random() * 5); 
+            if (vals[rand] > 4) vals[rand]--;
+            total = vals[0] + vals[1] + vals[2] + vals[3] + vals[4] + energy; 
+            System.out.println(total);
+        }
+        List<String> dist = new ArrayList<String>(); 
+        for (int i = 0; i < vals[0]; i++) dist.add("Mathematics"); 
+        for (int i = 0; i < vals[1]; i++) dist.add("Biology"); 
+        for (int i = 0; i < vals[2]; i++) dist.add("Chemistry"); 
+        for (int i = 0; i < vals[3]; i++) dist.add("Physics");
+        for (int i = 0; i < vals[4]; i++) dist.add("Earth and Space Science"); 
+        for (int i = 0; i < energy; i++) dist.add("Energy");
+        while (hasRepeats(dist)) Collections.shuffle(dist); 
+        return dist; 
+    }
+
     public static Boolean allZero(HashMap<String, Integer> x) {
         for(Map.Entry<String, Integer> entry: x.entrySet()) {
             if (!(entry.getValue().compareTo(0) <= 0)) {
@@ -106,29 +138,33 @@ public class OrderedRounds3{
             for(Map.Entry<String, List<String[]>> entry: data.entrySet()) {
                 diffNum = Integer.parseInt(entry.getKey());
                 List<String[]> questionsOfDiff = entry.getValue();
-               /* for (String [] x : extras) {
-                    if (diffNum - Integer.parseInt(x[38]) < 2) questionsOfDiff.add(x);
-                } */
+                for (String [] x : extras) {
+                    if (Math.abs(diffNum - Integer.parseInt(x[38])) < 2) questionsOfDiff.add(x);
+                } 
                 distribution.put("Mathematics", 5); 
                 distribution.put("Earth and Space Science", 5); 
                 distribution.put("Physics", 5); 
                 distribution.put("Chemistry", 5); 
                 distribution.put("Biology", 4);
-                distribution.put("Energy", 1);
+                distribution.put("Energy", 1); 
+                List<String> dist = getDist();
                 for (int i = 0; i < questionsOfDiff.size(); i++) {
-                    if (total % 25 == 0) pdfNum++;
+                    if (total % 25 == 0) {
+                        pdfNum++;
+                        dist = getDist(); 
+                    }
                     total++;
                     if (finalData.get(pdfNum+"") == null) {
                         finalData.put(pdfNum+"", new ArrayList<String[]>());
                     }
                     int rand = (int) (Math.random() * questionsOfDiff.size());
                     String subj = questionsOfDiff.get(rand)[2]; 
-                    while (subj.equals(lastSubj) || distribution.get(subj).compareTo(0) <= 0) {
-                        if (others(distribution, subj) || noMore(questionsOfDiff, subj)) break;
+                    while (!subj.equals(dist.get(total %25))) {
+                        if (noMore(questionsOfDiff, dist.get(total % 25))) break;
                         rand = (int) (Math.random() * questionsOfDiff.size());
                         subj = questionsOfDiff.get(rand)[2]; 
                     }
-                    lastSubj = subj;
+                    // lastSubj = subj;
                     for(Map.Entry<String, Integer> x: distribution.entrySet()) {
                         if (allSame(questionsOfDiff) || noMore(questionsOfDiff, x.getKey())) {
                             for (int j = 0; j < questionsOfDiff.size(); j++) {
@@ -139,18 +175,9 @@ public class OrderedRounds3{
                         }
                     }
                     if (!questionsOfDiff.isEmpty()) {
-                        if (allZero(distribution)) {
-                            distribution.put("Mathematics", 5); 
-                            distribution.put("Earth and Space Science", 5); 
-                            distribution.put("Physics", 5); 
-                            distribution.put("Chemistry", 5); 
-                            distribution.put("Biology", 4);
-                            distribution.put("Energy", 1);
-                        }
-                        distribution.put(subj, distribution.get(subj) - 1); 
                         finalData.get(pdfNum + "").add(questionsOfDiff.get(rand));
                         questionsOfDiff.remove(rand); 
-                        System.out.println(questionsOfDiff.size() + "\t" + subj + ": " + distribution.get(subj)); 
+                      //  System.out.println(questionsOfDiff.size() + "\t" + subj); 
                     }
                     i--;
                 }
